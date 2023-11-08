@@ -25,6 +25,7 @@ sales_table = """(
         TAX INT,
         TOTAL INT
         );"""
+
 inventory_table = """(
         ITEM_NO INT NOT NULL PRIMARY KEY,
         ITEM_NAME CHAR(20),
@@ -64,8 +65,8 @@ def input_data(table, lis=[]):
     if not lis:
         print("NO INPUT")
         return
-    field_ctrl = '?,' * att_no(table)
-    control.executemany("""INSERT INTO """ + table + """ VALUES (""" + field_ctrl[:-1] + """)""", lis)
+    field_ctrl = '%s,' * att_no(table)
+    control.executemany("""INSERT INTO """ + table + """ VALUES(""" + field_ctrl[:-1] + """)""", lis)
 
 
 def table_structure(table):
@@ -88,3 +89,6 @@ def view_table(table=''):
 #         temp.append(i[0])
 #     return temp
 
+# from datetime import date
+
+# import database as db
