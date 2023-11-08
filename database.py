@@ -92,3 +92,12 @@ def view_table(table=''):
 # from datetime import date
 
 # import database as db
+# control.execute("CREATE TABLE SAM(A INT,B CHAR(5));")
+# B =
+f = """insert into sam(A,B) values(1,'ssss');""".upper()#%()
+control.execute("""insert into sam(A,B) values(1,'ssss');""".upper())
+print(control.fetchall())
+connection.commit()
+# control.execute("sele")
+# a = [(1, 'rice', 23, 45, 50, 6, date(2000,5,1), date(2001,3,6))]
+# control.executemany("INSERT INTO INVENTORY VALUES(%s,%s,%s,%s,%s,%s,%s,%s)", a)
