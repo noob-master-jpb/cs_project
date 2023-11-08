@@ -42,9 +42,6 @@ def att_no(table):
     return control.execute("""describe """ + table)
 
 
-def execute(st):
-    return control.execute(st)
-
 
 def reset_table(table=''):
     ctrl = ''
@@ -95,7 +92,7 @@ def view_table(table=''):
 # control.execute("CREATE TABLE SAM(A INT,B CHAR(5));")
 # B =
 f = """insert into sam(A,B) values(1,'ssss');""".upper()#%()
-control.execute("""insert into sam(A,B) values(1,'ssss');""".upper())
+control.execute("""insert into sam values(1,'ssss');""".upper())
 print(control.fetchall())
 connection.commit()
 # control.execute("sele")
