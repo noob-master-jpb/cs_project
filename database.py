@@ -13,6 +13,8 @@ control = connection.cursor()
 # inv_att = list(control.execute("""Pragma table_info(inventory_table)"""))[-1][0] + 1
 # except IndexError:
 #     print('')
+
+
 sales_table = """(
         BILL_NO INT NOT NULL PRIMARY KEY,
         BILL_DATE DATE,
@@ -36,7 +38,7 @@ inventory_table = """(
 
 
 def att_no(table):
-    return list(control.execute("""desc """ + table))[-1][0] + 1
+    return control.execute("""describe """ + table)
 
 
 def execute(st):
@@ -67,7 +69,9 @@ def input_data(table, lis=[]):
 
 
 def table_structure(table):
-    return list(control.execute("""desc""" + table))
+    control.execute('describe inventory')
+    return control.fetchall()
+
 
 
 def view_table(table=''):
@@ -78,9 +82,9 @@ def view_table(table=''):
     return control.fetchall()
 
 
-def show_tables(self):
-    temp = []
-    for i in control.execute("""select name from sqlite_schema where type = 'table'"""):
-        temp.append(i[0])
-    return temp
+# def show_tables(self):
+#     temp = []
+#     for i in control.execute("""select name from sqlite_schema where type = 'table'"""):
+#         temp.append(i[0])
+#     return temp
 
