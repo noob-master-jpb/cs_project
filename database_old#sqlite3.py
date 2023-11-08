@@ -2,7 +2,7 @@ from sqlite3 import *
 
 connection = Connection("main_data")
 control = connection.cursor()
-control = control
+
 
 # sales_att = list(control.execute("""Pragma table_info(sales_table)"""))[-1][0] + 1
 # inv_att = list(control.execute("""Pragma table_info(inventory_table)"""))[-1][0] + 1
