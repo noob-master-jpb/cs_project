@@ -1,19 +1,15 @@
+from datetime import *
+
 from pymysql import *
 
+# code with minimum debugging _______
 connection = Connect(
-            host="localhost",
-            user='root',
-            password="root",
-            db="project_main"
-            )
+    host="localhost",
+    user='root',
+    password="root",
+    db="project_main"
+)
 control = connection.cursor()
-
-
-# sales_att = list(control.execute("""Pragma table_info(sales_table)"""))[-1][0] + 1
-# inv_att = list(control.execute("""Pragma table_info(inventory_table)"""))[-1][0] + 1
-# except IndexError:
-#     print('')
-
 
 sales_table = """(
         BILL_NO INT NOT NULL PRIMARY KEY,
@@ -42,8 +38,28 @@ def att_no(table):
     return control.execute("""describe """ + table)
 
 
+def view_table(table=''):
+    if table == '':
+        print("NO TABLE NAME GIVEN")
+    control.execute(("""SELECT * FROM """ + table + """;"""))
+    return control.fetchall()
 
 
+def table_structure(table=''):
+    if table == '':
+        print("NO TABLE INPUT")
+        return
+    control.execute(f'describe {table}')
+    return control.fetchall()
+
+
+def input_data(table, lis=[]):
+    if not lis:
+        print("NO INPUT")
+        return
+    field_ctrl = '%s,' * att_no(table)
+    control.executemany("""INSERT INTO """ + table + """ VALUES(""" + field_ctrl[:-1] + """)""", lis)
+    connection.commit()
 
 def reset_table(table=''):
     ctrl = ''
@@ -58,45 +74,3 @@ def reset_table(table=''):
         return
     control.execute("""DROP TABLE IF EXISTS """ + table + """;""")
     control.execute("""CREATE TABLE """ + table + ctrl)
-
-
-def input_data(table, lis=[]):
-    if not lis:
-        print("NO INPUT")
-        return
-    field_ctrl = '%s,' * att_no(table)
-    control.executemany("""INSERT INTO """ + table + """ VALUES(""" + field_ctrl[:-1] + """)""", lis)
-    connection.commit()
-
-def table_structure(table):
-    control.execute('describe inventory')
-    return control.fetchall()
-
-
-
-def view_table(table=''):
-    if table == '':
-        print("NO TABLE NAME GIVEN")
-    control.execute(("""SELECT * FROM """ + table + """;"""))
-    print(control.fetchall())
-    return control.fetchall()
-
-
-# def show_tables(self):
-#     temp = []
-#     for i in control.execute("""select name from sqlite_schema where type = 'table'"""):
-#         temp.append(i[0])
-#     return temp
-
-# from datetime import date
-
-# import database as db
-# control.execute("CREATE TABLE SAM(A INT,B CHAR(5));")
-# B =
-f = """insert into sam(A,B) values(1,'ssss');""".upper()#%()
-control.execute("""insert into sam(A,B) values(1,'ssss');""".upper())
-print(control.fetchall())
-connection.commit()
-# control.execute("sele")
-# a = [(1, 'rice', 23, 45, 50, 6, date(2000,5,1), date(2001,3,6))]
-# control.executemany("INSERT INTO INVENTORY VALUES(%s,%s,%s,%s,%s,%s,%s,%s)", a)
