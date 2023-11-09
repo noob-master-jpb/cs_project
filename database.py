@@ -65,13 +65,11 @@ def input_data(table, lis=[]):
     if not lis:
         print("NO INPUT")
         return
-
     field_ctrl = '%s,' * att_no(table)
-    control.executemany("""INSERT INTO """ + table + """ VALUES(""" + field_ctrl[:-1] + """);""", lis)
-    connection.commit()
+    control.executemany("""INSERT INTO """ + table + """ VALUES(""" + field_ctrl[:-1] + """)""", lis)
 
 
-def table_structure(table=''):
+def table_structure(table):
     control.execute('describe inventory')
     return control.fetchall()
 
@@ -98,10 +96,8 @@ def view_table(table=''):
 # B =
 f = """insert into sam(A,B) values(1,'ssss');""".upper()#%()
 control.execute("""insert into sam(A,B) values(1,'ssss');""".upper())
-
+print(control.fetchall())
 connection.commit()
 # control.execute("sele")
 # a = [(1, 'rice', 23, 45, 50, 6, date(2000,5,1), date(2001,3,6))]
 # control.executemany("INSERT INTO INVENTORY VALUES(%s,%s,%s,%s,%s,%s,%s,%s)", a)
-control.execute("SELECT * FROM SAM")
-print(control.fetchall())
