@@ -42,8 +42,7 @@ def att_no(table):
     return control.execute("""describe """ + table)
 
 
-def execute(st):
-    return control.execute(st)
+
 
 
 def reset_table(table=''):
