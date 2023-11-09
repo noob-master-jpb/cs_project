@@ -67,7 +67,7 @@ def input_data(table, lis=[]):
         return
     field_ctrl = '%s,' * att_no(table)
     control.executemany("""INSERT INTO """ + table + """ VALUES(""" + field_ctrl[:-1] + """)""", lis)
-
+    connection.commit()
 
 def table_structure(table):
     control.execute('describe inventory')
