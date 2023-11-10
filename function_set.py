@@ -75,9 +75,9 @@ def align_row_head(lis, table):  # takes rows and return aligned rows
 
 def field_to_row(lis):
     temp = []
-    for j in range(0,len(lis)):
+    for j in range(0,len(lis[0])):
         t = []
         for i in lis:
-            print(i[j])
-
-
+            t.append(i[j])
+        temp.append(t)
+    return temp

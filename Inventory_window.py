@@ -18,7 +18,13 @@ t = []
 for j in range(att_no(tab)):
     t.append(align_field_head(j, tab))
 
-field_to_row(t)
+for i inn ret_header(tab):
+
+for i in field_to_row(t):
+    print("|",end=' ')
+    for j in i:
+        print(j, end= ' | ')
+    print('')
 # for i in ret_header(tab):
 #     print(i)
 #
