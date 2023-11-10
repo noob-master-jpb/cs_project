@@ -11,10 +11,27 @@ def count_row_len(ind, table):  # used to count the max length of a value in a f
     return lt
 
 
-def align(id, table):  # used to align the values in field
+def align_field(id, table):  # used to align the values in field
     temp = []
     for i in view_table(table):
         k = i[id]
         if len(str(k)) < count_row_len(id, table):
             k = ' ' * (count_row_len(id, table) - len(str(k))) + str(k)
         temp.append(k)
+
+
+def align_row(lis, table):  # takes rows and return aligned rows
+    temp = []
+    max_lis = []
+    for j in range(0, att_no(table)):
+        max_lis.append(count_row_len(j, table))
+    for ko in lis:
+        ti = []
+        for i in ko:
+            k = i
+            if len(str(k)) < max_lis[ko.index(i)]:
+                k = ' ' * (max_lis[ko.index(i)] - len(str(k))) + str(k)
+            ti.append(k)
+        temp.append(ti)
+    return temp
+
