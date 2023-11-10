@@ -17,9 +17,10 @@ tab = 'INVENTORY'
 t = []
 for j in range(att_no(tab)):
     t.append(align_field_head(j, tab))
-
-for i inn ret_header(tab):
-
+print("|",end=' ')
+for i in ret_header(tab):
+    print(i, end=' | ')
+print()
 for i in field_to_row(t):
     print("|",end=' ')
     for j in i:
