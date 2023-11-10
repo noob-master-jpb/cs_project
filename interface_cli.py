@@ -4,4 +4,5 @@ print("1. NEW BILL\n"
 win = int(input("--->"))
 
 if win == 1:
-    print()
+    print(1)
+eli
