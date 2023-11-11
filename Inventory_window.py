@@ -15,11 +15,7 @@ def show_all_inventory(rec=view_table(tab), table=tab):
 
 header = ret_header(tab)
 
-show_all_inventory()
-print("1. To USE FILTER")
-print("2. To USE SORTING")
-at = int(input("--> "))
-if at == 1:
+def filter_inventory(tab = "INVENTORY"):
     ls = ['COST_PRICE', "SELL_PRICE", "QUANTITY", "DATE_ADDED", "EXPIRY"]
     for i in enumerate(ls):
         print(f"{i[0] + 1}. by {i[1].replace('_', ' ')}")
@@ -34,11 +30,29 @@ if at == 1:
     print(control.execute(f"SELECT * FROM {tab} WHERE {ls[ap - 1]} BETWEEN {up} AND {down};".upper()), "RECORDS FOUND")
     filt_data = control.fetchall()
     show_all_inventory(filt_data, tab)
+    return filt_data
+show_all_inventory()
+ctrl = 0
+rec_state = 0
+temp_rec = None
+while not ctrl:
+    if not rec_state:
+        print("1. To USE FILTER")
+        print("2. To USE SORTING")
 
-elif at == 2:
-    for i in enumerate(header):
-        print(f"{i[0] + 1}. by {i[1].replace('_', ' ')}")
-    srt = int(input("-->"))
-    print("1. ascending".upper())
-    print("2. Descending".upper())
-    srt_type = int(input("-->"))
+    at = int(input("--> "))
+    if at == 1:
+        if not rec_state:
+            temp_rec = filter_inventory()
+            rec_state = 1
+        else:
+            print("1. filter from this table".upper())
+            print("2. filter from full table".upper())
+
+    elif at == 2:
+        for i in enumerate(header):
+            print(f"{i[0] + 1}. by {i[1].replace('_', ' ')}")
+        srt = int(input("-->"))
+        print("1. ascending".upper())
+        print("2. Descending".upper())
+        srt_type = int(input("-->"))
