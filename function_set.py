@@ -49,7 +49,7 @@ def align_row(lis, table):  # takes rows and return aligned rows
     return temp
 
 
-def ret_header(table):  #returns the header list of the table
+def ret_header(table):  # returns the header list of the table
     tem = []
     for c in table_structure(table):
         tem.append(c[0])

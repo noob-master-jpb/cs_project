@@ -12,6 +12,7 @@ def show_all_inventory(rec=view_table(tab), table=tab):
             print(j[i], end='| ')
         print()
 
+header = ret_header(tab)
 
 show_all_inventory()
 print("1. To USE FILTER")
@@ -51,14 +52,8 @@ if at == 1:
         down = input("TO--> ")
         print(up, down)
 elif at == 2:
-    print("1. by ITEM NO")
-    print("2. by NAME")
-    print("3. by BATCH NO")
-    print("4. by COST PRICE")
-    print("5. by SELL PRICE")
-    print("6. by QUANTITY")
-    print("7. by DATE ADDED")
-    print("8. by EXPIRY DATE")
+    for i in enumerate(header):
+        print(f"{i[0]+1}. by {i[1].replace('_',' ')}")
     srt = int(input("-->"))
     print("1. ascending".upper())
     print("2. Descending".upper())
