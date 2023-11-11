@@ -3,36 +3,12 @@ from database import *
 
 tab = 'INVENTORY'
 
-# print('INVENTORY')
-# for i in view_table(tab):
-#     a = align_field(i, )
-#     for h in a:
-#         print(align_field(h, tab), end=" ")
-#     print("")
+t = align_records_with_head(view_table(tab), tab)
 
-# for j in range(att_no(tab)):
-#     for i in align_field_head(j, tab):
-#         print(i, end=' |')
-#         print()
-t = []
-for j in range(att_no(tab)):
-    t.append(align_field_head(j, tab))
-print("|",end=' ')
-for i in ret_header(tab):
-    print(i, end=' | ')
-print()
-for i in field_to_row(t):
-    print("|",end=' ')
-    for j in i:
-        print(j, end= ' | ')
-    print('')
-# for i in ret_header(tab):
-#     print(i)
-#
-#
-#
-# for i in align_row_head(view_table(tab),tab):
-#     print("|",end=' ')
-#     for j in i:
-#         print(j, end= ' | ')
-#     print('')
+for i in range(0, len(t)):
+    for j in t:
+        print(j[i], end='| ')
+    print()
+
+
+
