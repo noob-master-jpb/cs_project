@@ -7,7 +7,7 @@ print("ALL RECORDS")
 
 def show_all_inventory(rec=view_table(tab), table=tab):
     t = align_records_with_head(rec, table)
-    for i in range(0, len(t)):
+    for i in range(0, len(rec)+1):
         for j in t:
             print(j[i], end='| ')
         print()
@@ -19,38 +19,21 @@ print("1. To USE FILTER")
 print("2. To USE SORTING")
 at = int(input("--> "))
 if at == 1:
-    print("1. by COST PRICE")
-    print("2. by SELL PRICE")
-    print("3. by QUANTITY")
-    print("4. by DATE ADDED")
-    print("5. by EXPIRY DATE")
+    ls = ['COST_PRICE',"SELL_PRICE","QUANTITY","DATE_ADDED","EXPIRY"]
+    for i in enumerate(ls):
+        print(f"{i[0] + 1}. by {i[1].replace('_', ' ')}")
     ap = int(input("--> "))
-    if ap == 1:
-        print("PUT THE RANGE OF COST PRICE")
-        up = int(input("FROM--> "))
-        down = int(input("TO--> "))
-        print(up, down)
-    elif ap == 2:
-        print("PUT THE RANGE OF SELL PRICE")
-        up = int(input("FROM--> "))
-        down = int(input("TO--> "))
-        print(up, down)
-    elif ap == 3:
-        print("PUT THE RANGE OF QUANTITY")
-        up = int(input("FROM--> "))
-        down = int(input("TO--> "))
-        print(up, down)
+    print(f"PUT THE RANGE OF {ls[ap-1].replace('_',' ')}")
+    up = input("FROM--> ")
+    down = input("TO--> ")
+    if ls[ap] not in ls[-2:]:
+        up = int(up)
+        down = int(down)
+    # print(f"SELECT * FROM {tab} WHERE {ls[ap-1]} BETWEEN {up} AND {down};".upper())
+    print(control.execute(f"SELECT * FROM {tab} WHERE {ls[ap - 1]} BETWEEN {up} AND {down};".upper()),"RECORDS FOUND")
+    filt_data = control.fetchall()
+    show_all_inventory(filt_data,tab)
 
-    elif ap == 4:
-        print("PUT THE RANGE OF DATE ADDED")
-        up = input("FROM--> ")
-        down = input("TO--> ")
-        print(up, down)
-    elif ap == 5:
-        print("PUT THE RANGE OF EXPIRY DATE")
-        up = input("FROM--> ")
-        down = input("TO--> ")
-        print(up, down)
 elif at == 2:
     for i in enumerate(header):
         print(f"{i[0]+1}. by {i[1].replace('_',' ')}")
