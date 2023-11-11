@@ -12,3 +12,4 @@ def show_all_inventory(rec = view_table(tab),table = tab):
 show_all_inventory()
 print("1. To USE FILTER")
 print("2. To USE SORTING")
+a = input()
