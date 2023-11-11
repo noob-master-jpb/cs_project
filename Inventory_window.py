@@ -12,4 +12,12 @@ def show_all_inventory(rec = view_table(tab),table = tab):
 show_all_inventory()
 print("1. To USE FILTER")
 print("2. To USE SORTING")
-a = input("")
+at = int(input("---> "))
+if at == 1:
+    print("1. by NAME")
+    print("2. by COST PRICE")
+    print("3. by SELL PRICE")
+    print("4. by DATE ADDED")
+    print("5. by EXPIRY DATE")
+
+
