@@ -101,3 +101,32 @@ def align_records_with_head(records, table):  # aligns the records with proper f
             if len(k) < max_len:
                 i[i.index(k)] = " " * (max_len - len(k)) + k
     return t
+
+def sort_field_seq(id, table,srs = None):
+    if not srs:
+        sd = view_table(table)
+    else:
+        sd = list(srs)
+    sk = [i[id] for i in sd]
+    sk = list(enumerate(sk))
+    ct = 0
+    for g in range(len(sk)):
+        tk = list(sk)
+        for i in range(g % 2, len(sk) - (g % 2), 2):
+            try:
+                if sk[i][1] > sk[i + 1][1]:
+                    sk[i], sk[i + 1] = sk[i + 1], sk[i]
+            except IndexError:
+                pass
+        if sk == tk:
+            ct += 1
+            # print(ct)
+        # print(sk)
+        if ct >= 2:
+            break
+    temp = []
+    for go in sk:
+        temp.append(go[0])
+    return temp
+
+
