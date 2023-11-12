@@ -36,9 +36,8 @@ ctrl = 0
 rec_state = 0
 temp_rec = None
 while not ctrl:
-    if not rec_state:
-        print("1. To USE FILTER")
-        print("2. To USE SORTING")
+    print("1. To USE FILTER")
+    print("2. To USE SORTING")
 
     at = int(input("--> "))
     if at == 1:
