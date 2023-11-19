@@ -1,9 +1,7 @@
 from function_set import *
 from database import *
 
-tab = 'INVENTORY'
-print("ALL RECORDS")
-
+tab = "SALES"
 
 def show_all_inventory(rec=view_table(tab), table=tab):
     t = align_records_with_head(rec, table)
@@ -25,8 +23,8 @@ tt = show_all_inventory()
 # def sort(lis):
 #     print()
 
-def filter_inventory(tab="INVENTORY"):
-    ls = ['COST_PRICE', "SELL_PRICE", "QUANTITY", "DATE_ADDED", "EXPIRY"]
+def filter_sales(tab="SALES"):
+    ls = ["QUANTITY","PRICE","TOTAL",'BILL_DATE']
     for i in enumerate(ls):
         print(f"{i[0] + 1}. by {i[1].replace('_', ' ')}")
     ap = int(input("--> "))
@@ -51,7 +49,7 @@ while not ctrl:
 
     at = int(input("--> "))
     if at == 1:
-        temp_data = filter_inventory()
+        temp_data = filter_sales()
         # print(temp_data)
         print("DO YOU WANT TO SORT THIS TABLE? y/n")
         sr = input("-->")
