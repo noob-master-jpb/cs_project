@@ -85,4 +85,5 @@ while not ctrl:
             print("invalid input".upper())
         # print(sort_seq)
         show_all_inventory([view_table(tab)[i] for i in sort_seq], tab)
-
+    elif at == 3:
+        ctrl = 1
