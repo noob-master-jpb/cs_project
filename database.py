@@ -34,18 +34,18 @@ inventory_table = """(
         );"""
 
 
-def att_no(table):
+def att_no(table): # number of fields describe
     return control.execute("""describe """ + table)
 
 
-def view_table(table=''):
+def view_table(table=''): # records without attribute list of tuples return kore
     if table == '':
         print("NO TABLE NAME GIVEN")
     control.execute(("""SELECT * FROM """ + table + """;"""))
     return control.fetchall()
 
 
-def table_structure(table=''):
+def table_structure(table=''): # desc table
     if table == '':
         print("NO TABLE INPUT")
         return
@@ -53,7 +53,7 @@ def table_structure(table=''):
     return control.fetchall()
 
 
-def input_data(table, lis=[]):
+def input_data(table, lis=[]): #input records in list of tuples
     if not lis:
         print("NO INPUT")
         return
@@ -61,7 +61,7 @@ def input_data(table, lis=[]):
     control.executemany("""INSERT INTO """ + table + """ VALUES(""" + field_ctrl[:-1] + """)""", lis)
     connection.commit()
 
-def reset_table(table=''):
+def reset_table(table=''): # new table creation or exiting table reset using drop
     ctrl = ''
     if table == '':
         print("NO TABLE NAME GIVEN")
