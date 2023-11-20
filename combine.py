@@ -127,9 +127,9 @@ def take_control(tab):
                             break
                         tmp.append(adit)
                     if (tmp) and (len(tmp) == 8):
-                        if not (len(tmp) == 8):
-                            print("not enough for the item".upper())
                         temp.append(tuple(tmp))
+                    elif not (len(tmp) == 8):
+                        print("not enough for the item".upper())
                     ctz += 1
                 input_data(tab, temp)
                 print(temp)
