@@ -38,7 +38,7 @@ def filter(tab):
         up = int(up)
         down = int(down)
     else:
-        up = "'"+up+"'"
+        up = "'" + up + "'"
         down = "'" + down + "'"
     # print(f"SELECT * FROM {tab} WHERE {ls[ap-1]} BETWEEN {up} AND {down};".upper())
     print(control.execute(f"SELECT * FROM {tab} WHERE {ls[ap - 1]} BETWEEN {up} AND {down};".upper()), "RECORDS FOUND")
@@ -53,19 +53,19 @@ def take_control(tab):
     else:
         inv = 0
     header = ret_header(tab)
-    all_rec = view_table(tab)
-    tt = show_table(view_table(tab), tab)
+    # all_rec = view_table(tab)
+    # tt = show_table(view_table(tab), tab)
     ctrl = 0
     print("ALL RECORDS")
     while not ctrl:
-        lo = ["To USE FILTER","To USE SORTING","To ADD ITEMS","To CLOSE"]
+        lo = ["To USE FILTER", "To USE SORTING", "To ADD ITEMS", "To CLOSE"]
         if inv:
             for i in enumerate(lo):
-                print(f"{i[0]+1}. {i[1]}")
+                print(f"{i[0] + 1}. {i[1]}")
         else:
             lo.pop(2)
             for i in enumerate(lo):
-                print(f"{i[0]+1}. {i[1]}")
+                print(f"{i[0] + 1}. {i[1]}")
         # print("1. To USE FILTER")
         # print("2. To USE SORTING")
         # print("3. To CLOSE")
@@ -117,7 +117,7 @@ def take_control(tab):
                 temp = []
                 ctz = 0
                 while zt:
-                    print(f"FOR ITEM {ctz+1}")
+                    print(f"FOR ITEM {ctz + 1}")
                     tmp = []
                     for i in header:
                         print(i)
@@ -127,9 +127,11 @@ def take_control(tab):
                             break
                         tmp.append(adit)
                     if (tmp) and (len(tmp) == 8):
+                        if not (len(tmp) == 8):
+                            print("not enough for the item".upper())
                         temp.append(tuple(tmp))
                     ctz += 1
-                input_data(tab,temp)
+                input_data(tab, temp)
                 print(temp)
         elif (at == 4) and (inv):
             ctrl = 1
