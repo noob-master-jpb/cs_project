@@ -48,15 +48,27 @@ def filter(tab):
 
 
 def take_control(tab):
+    if tab.upper() == "INVENTORY":
+        inv = 1
+    else:
+        inv = 0
     header = ret_header(tab)
     all_rec = view_table(tab)
     tt = show_table(view_table(tab), tab)
     ctrl = 0
     print("ALL RECORDS")
     while not ctrl:
-        print("1. To USE FILTER")
-        print("2. To USE SORTING")
-        print("3. To CLOSE")
+        lo = ["To USE FILTER","To USE SORTING","To ADD ITEMS","To CLOSE"]
+        if inv:
+            for i in enumerate(lo):
+                print(f"{i[0]+1}. {i[1]}")
+        else:
+            lo.pop(2)
+            for i in enumerate(lo):
+                print(f"{i[0]+1}. {i[1]}")
+        # print("1. To USE FILTER")
+        # print("2. To USE SORTING")
+        # print("3. To CLOSE")
 
         at = int(input("--> "))
         if at == 1:
@@ -97,4 +109,29 @@ def take_control(tab):
             # print(sort_seq)
             show_table([view_table(tab)[i] for i in sort_seq], tab)
         elif at == 3:
+            if not inv:
+                ctrl = 1
+            else:
+                zt = 1
+                print("input the items and when you are done input 'exit' to quit".upper())
+                temp = []
+                ctz = 0
+                while zt:
+                    print(f"FOR ITEM {ctz+1}")
+                    tmp = []
+                    for i in header:
+                        print(i)
+                        adit = input("-->")
+                        if adit.upper() == 'exit'.upper():
+                            zt = 0
+                            break
+                        tmp.append(adit)
+                    if (tmp) and (len(tmp) == 8):
+                        temp.append(tuple(tmp))
+                    ctz += 1
+                input_data(tab,temp)
+                print(temp)
+        elif (at == 4) and (inv):
             ctrl = 1
+
+# take_control("INVENTORY")
