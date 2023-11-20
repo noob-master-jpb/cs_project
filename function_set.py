@@ -120,7 +120,7 @@ def sort_field_seq(id, table,srs = None):
                 pass
         if sk == tk:
             ct += 1
-            # print(ct)
+            # print(ct)!
         # print(sk)
         if ct >= 2:
             break

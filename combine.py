@@ -18,11 +18,13 @@ def filter(tab):
         return
     if tab.upper() == "INVENTORY":
         ls = ['COST_PRICE', "SELL_PRICE", "QUANTITY", "DATE_ADDED", "EXPIRY"]
+        v = -2
     elif tab.upper() == "SALES":
         ls = ["QUANTITY", "PRICE", "TOTAL", 'BILL_DATE']
+        v = -1
     else:
         print("table not included in function".upper())
-
+        return
     for i in enumerate(ls):
         print(f"{i[0] + 1}. by {i[1].replace('_', ' ')}")
 
@@ -32,10 +34,12 @@ def filter(tab):
     up = input("FROM--> ")
     down = input("TO--> ")
 
-    if ls[ap] not in ls[-2:]:
+    if ls[ap] not in ls[v:]:
         up = int(up)
         down = int(down)
-
+    else:
+        up = "'"+up+"'"
+        down = "'" + down + "'"
     # print(f"SELECT * FROM {tab} WHERE {ls[ap-1]} BETWEEN {up} AND {down};".upper())
     print(control.execute(f"SELECT * FROM {tab} WHERE {ls[ap - 1]} BETWEEN {up} AND {down};".upper()), "RECORDS FOUND")
     filt_data = control.fetchall()
