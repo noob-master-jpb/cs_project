@@ -34,6 +34,7 @@ inventory_table = """(
         );"""
 
 
+
 def att_no(table): # number of fields describe
     return control.execute("""describe """ + table)
 

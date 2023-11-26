@@ -12,3 +12,4 @@ for i in range(20):
     print("(", i, ", ", k, ", ", random.choice(a), ", ", random.choice(a), ", ", random.choice(a), ", ",random.choice(a), ", ",
           "'" + str(date(random.choice(c), random.choice(d), random.choice(f))) + "'", ", ",
           "'" + str(date(random.choice(c), random.choice(d), random.choice(f))) + "'", ")", end=',\n')
+print(123)

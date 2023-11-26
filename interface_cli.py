@@ -1,5 +1,5 @@
 from combine import *
-
+from bill_window import *
 vtrl = 0
 
 while not vtrl:
@@ -10,7 +10,7 @@ while not vtrl:
 
     win = int(input("--->"))
     if win == 1:
-        print(1)
+        bill()
     elif win == 2:
         take_control("INVENTORY")
     elif win == 3:
