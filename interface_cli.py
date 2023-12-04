@@ -6,9 +6,9 @@ vtrl = 0
 
 while not vtrl:
     print("1. NEW BILL\n"
-          "2. INVENTORY\n"
+          "2. VIEW INVENTORY\n"
           "3. UPDATE INVENTORY\n"
-          "4. SALES HISTORY\n"
+          "4. VIEW SALES HISTORY\n"
           "5. EXIT")
 
     win = int(input("--->"))
