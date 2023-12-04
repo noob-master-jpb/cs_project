@@ -3,13 +3,10 @@ from datetime import *
 from pymysql import *
 
 # code with minimum debugging _______
-connection = Connect(
-    host="localhost",
-    user='root',
-    password="root",
-    db="project_main"
-)
+connection = Connect(host="localhost",user='root',password="root",db="project_main")
 control = connection.cursor()
+
+
 
 sales_table = """(
         BILL_NO INT NOT NULL PRIMARY KEY,
