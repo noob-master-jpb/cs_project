@@ -1,4 +1,4 @@
-# <<<<<<< HEAD dd
+# <<<<<<< HEAD
 def bill(typ=0):
     temp = {}
     temp_lt = []
