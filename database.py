@@ -72,3 +72,18 @@ def reset_table(table=''): # new table creation or exiting table reset using dro
         return
     control.execute("""DROP TABLE IF EXISTS """ + table + """;""")
     control.execute("""CREATE TABLE """ + table + ctrl)
+
+def out_rec_dict(a=None):
+    if a is None:
+        a = {}
+    k =[]
+    for i in a.keys():
+        control.execute(f"select * from inventory where item_no = {i};")
+        k.append(control.fetchall()[0])
+    return k
+
+def out_fields_tab(feild = None,tab = None):
+    if (not feild) or (not tab):
+        return
+    control.execute(f"select {feild} from {tab}")
+    return control.fetchall()
