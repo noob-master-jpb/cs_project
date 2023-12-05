@@ -1,6 +1,6 @@
 from function_set import *
 from database import *
-
+from datetime import *
 
 def show_table(rec, table):
     t = align_records_with_head(rec, table)
@@ -58,12 +58,12 @@ def take_control(tab):
     ctrl = 0
     print("ALL RECORDS")
     while not ctrl:
-        lo = ["To USE FILTER", "To USE SORTING", "To ADD ITEMS", "To CLOSE"]
+        lo = ["To USE FILTER", "To USE SORTING", "To ADD ITEMS", "MODIFY ITEM", "DELETE ITEM", "To CLOSE"]
         if inv:
             for i in enumerate(lo):
                 print(f"{i[0] + 1}. {i[1]}")
         else:
-            lo.pop(2)
+            lo = ["To USE FILTER", "To USE SORTING", "To CLOSE"]
             for i in enumerate(lo):
                 print(f"{i[0] + 1}. {i[1]}")
         # print("1. To USE FILTER")
@@ -120,7 +120,11 @@ def take_control(tab):
                     print(f"FOR ITEM {ctz + 1}")
                     tmp = []
                     for i in header:
-                        print(i)
+                        if i == "DATE_ADDED":
+                            adit = date.today()
+                            tmp.append(adit)
+                            continue
+                        print(i.replace("_"," "))
                         adit = input("-->")
                         if adit.upper() == 'exit'.upper():
                             zt = 0
@@ -133,7 +137,53 @@ def take_control(tab):
                     ctz += 1
                 input_data(tab, temp)
                 print(temp)
-        elif (at == 4) and (inv):
-            ctrl = 1
+        elif at == 4:
+            if not inv:
+                ctrl = 1
+            else:
+                print("ENTER THE ITEM NO OF THE RECORD YOU WANT TO UPDATE")
+                mod_id = input("-->")
+                control.execute(f"select * from inventory where item_no = {mod_id}")
+                id_rec = control.fetchall()
+                print("Present Record")
 
+                for j in field_to_row(align_records_with_head(id_rec, "inventory")):
+                    for k in j:
+                        print(k, end="| ")
+                    print()
+
+                print("SELECT WHAT YOU WANT TO CHANGE")
+
+                for i in enumerate(table_structure("inventory")[1:]):
+                    print(f"{i[0] + 1}. {i[1][0]}")
+                prop_id = input("-->")
+                hed = [i[0] for i in table_structure("inventory")][int(prop_id)]
+                print(hed)
+                print("ENTER THE NEW VALUE")
+                new_dat = input("-->")
+
+                print(control.execute(f"update inventory set {hed}='{new_dat}' where item_no = {mod_id};"))
+                connection.commit()
+        elif at == 5:
+            if not inv:
+                ctrl = 1
+            else:
+                print("ENTER THE ITEM NO OF THE RECORD YOU WANT TO DELETE")
+                mod_id = input("-->")
+                control.execute(f"select * from inventory where item_no = {mod_id}")
+                id_rec = control.fetchall()
+                print("Record")
+                for j in field_to_row(align_records_with_head(id_rec, "inventory")):
+                    for k in j:
+                        print(k, end="| ")
+                    print()
+                print("ARE YOU SURE YOU WANT TO DELETE IT? Y/N")
+                des = input()
+                if des.upper() == 'Y':
+                    control.execute(f"DELETE FROM INVENTORY WHERE ITEM_NO = '{mod_id}' ")
+                else:
+                    return
+                connection.commit()
+        elif at == 6:
+            ctrl = 1
 # take_control("INVENTORY")

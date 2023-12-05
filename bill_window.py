@@ -47,4 +47,3 @@ def gen_bill():
         print()
     print(f"TOTAL AMOUNT = Rs {sum([int(i) for i in display_record[-1][1:]])}")
     input_data("sales",actual_rec)
-gen_bill()
