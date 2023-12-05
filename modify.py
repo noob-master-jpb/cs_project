@@ -44,3 +44,4 @@ def delete_inventory():
         return
     connection.commit()
 
+

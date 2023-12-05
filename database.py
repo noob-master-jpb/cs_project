@@ -3,10 +3,11 @@ from datetime import *
 from pymysql import *
 
 # code with minimum debugging _______
-connection = Connect(host="localhost",user='root',password="root",db="project_main")
+connection = Connect(host="localhost",
+                     user='root',
+                     password="root",
+                     db="project_main")
 control = connection.cursor()
-
-
 
 sales_table = """(
         BILL_NO INT NOT NULL PRIMARY KEY,
@@ -31,19 +32,18 @@ inventory_table = """(
         );"""
 
 
-
-def att_no(table): # number of fields describe
+def att_no(table):  # number of fields describe
     return control.execute("""describe """ + table)
 
 
-def view_table(table=''): # records without attribute list of tuples return kore
+def view_table(table=''):  # records without attribute list of tuples return kore
     if table == '':
         print("NO TABLE NAME GIVEN")
     control.execute(("""SELECT * FROM """ + table + """;"""))
     return control.fetchall()
 
 
-def table_structure(table=''): # desc table
+def table_structure(table=''):  # desc table
     if table == '':
         print("NO TABLE INPUT")
         return
@@ -51,7 +51,7 @@ def table_structure(table=''): # desc table
     return control.fetchall()
 
 
-def input_data(table, lis=[]): #input records in list of tuples
+def input_data(table, lis=[]):  # input records in list of tuples
     if not lis:
         print("NO INPUT")
         return
@@ -59,7 +59,8 @@ def input_data(table, lis=[]): #input records in list of tuples
     control.executemany("""INSERT INTO """ + table + """ VALUES(""" + field_ctrl[:-1] + """)""", lis)
     connection.commit()
 
-def reset_table(table=''): # new table creation or exiting table reset using drop
+
+def reset_table(table=''):  # new table creation or exiting table reset using drop
     ctrl = ''
     if table == '':
         print("NO TABLE NAME GIVEN")
@@ -73,16 +74,18 @@ def reset_table(table=''): # new table creation or exiting table reset using dro
     control.execute("""DROP TABLE IF EXISTS """ + table + """;""")
     control.execute("""CREATE TABLE """ + table + ctrl)
 
+
 def out_rec_dict(a=None):
     if a is None:
         a = {}
-    k =[]
+    k = []
     for i in a.keys():
         control.execute(f"select * from inventory where item_no = {i};")
         k.append(control.fetchall()[0])
     return k
 
-def out_fields_tab(feild = None,tab = None):
+
+def out_fields_tab(feild=None, tab=None):
     if (not feild) or (not tab):
         return
     control.execute(f"select {feild} from {tab}")
