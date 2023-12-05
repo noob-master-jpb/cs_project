@@ -1,6 +1,6 @@
 from datetime import *
 from pymysql import *
-
+import pymysql
 
 def count_row_len(ind, table):
     all = view_table(table)
@@ -127,7 +127,12 @@ def input_data(table, lis=[]):
         print("NO INPUT")
         return
     field_ctrl = '%s,' * att_no(table)
-    control.executemany("""INSERT INTO """ + table + """ VALUES(""" + field_ctrl[:-1] + """)""", lis)
+    try:
+        control.executemany("""INSERT INTO """ + table + """ VALUES(""" + field_ctrl[:-1] + """)""", lis)
+    except pymysql.err.DataError:
+        print("INVALID INPUT")
+        return None
+
     connection.commit()
 
 
@@ -156,11 +161,11 @@ def out_rec_dict(a=None):
     return k
 
 
-def out_fields_tab(feild=None, tab=None):
-    if (not feild) or (not tab):
-        return
-    control.execute(f"select {feild} from {tab}")
-    return control.fetchall()
+# def out_fields_tab(feild=None, tab=None):
+#     if (not feild) or (not tab):
+#         return
+#     control.execute(f"select {feild} from {tab}")
+#     return control.fetchall()
 
 
 def show_table(rec, table):
@@ -188,21 +193,34 @@ def filter(tab):
         return
     for i in enumerate(ls):
         print(f"{i[0] + 1}. by {i[1].replace('_', ' ')}")
-
-    ap = int(input("--> "))
-
-    print(f"PUT THE RANGE OF {ls[ap - 1].replace('_', ' ')}")
+    try:
+        ap = int(input("--> "))
+    except ValueError:
+        print("INVALID INPUT")
+        return
+    try:
+        print(f"PUT THE RANGE OF {ls[ap - 1].replace('_', ' ')}")
+    except IndexError:
+        print("INVALID INPUT")
+        return
     up = input("FROM--> ")
     down = input("TO--> ")
 
     if ls[ap] not in ls[v:]:
-        up = int(up)
-        down = int(down)
+        try:
+            up = int(up)
+            down = int(down)
+        except ValueError:
+            print("INVALID INPUT")
+            return
     else:
         up = "'" + up + "'"
         down = "'" + down + "'"
     # print(f"SELECT * FROM {tab} WHERE {ls[ap-1]} BETWEEN {up} AND {down};".upper())
-    print(control.execute(f"SELECT * FROM {tab} WHERE {ls[ap - 1]} BETWEEN {up} AND {down};".upper()), "RECORDS FOUND")
+    num_rec = control.execute(f"SELECT * FROM {tab} WHERE {ls[ap - 1]} BETWEEN {up} AND {down};".upper())
+    print(num_rec, "RECORDS FOUND")
+    if num_rec == 0:
+        return None
     filt_data = control.fetchall()
     show_table(filt_data, tab)
     return filt_data
@@ -219,7 +237,7 @@ def take_control(tab):
     ctrl = 0
     print("ALL RECORDS")
     while not ctrl:
-        lo = ["To USE FILTER", "To USE SORTING", "To ADD ITEMS", "MODIFY ITEM", "DELETE ITEM", "To CLOSE"]
+        lo = ["To USE FILTER", "To USE SORTING", "ADD ITEMS", "MODIFY ITEM", "DELETE ITEM", "To CLOSE"]
         if inv:
             for i in enumerate(lo):
                 print(f"{i[0] + 1}. {i[1]}")
@@ -230,17 +248,25 @@ def take_control(tab):
         # print("1. To USE FILTER")
         # print("2. To USE SORTING")
         # print("3. To CLOSE")
-
-        at = int(input("--> "))
+        try:
+            at = int(input("--> "))
+        except ValueError:
+            print("INVALID INPUT")
+            continue
         if at == 1:
             temp_data = filter(tab)
-            # print(temp_data)
+            if temp_data == None:
+                continue
             print("DO YOU WANT TO SORT THIS TABLE? y/n")
             sr = input("-->")
             if sr.upper() == 'Y':
                 for i in enumerate(header):
                     print(f"{i[0] + 1}. by {i[1].replace('_', ' ')}")
-                srt = int(input("-->"))
+                try:
+                    srt = int(input("-->"))
+                except ValueError:
+                    print("INVALID INPUT")
+                    continue
                 print("1. ascending".upper())
                 print("2. Descending".upper())
                 srt_type = int(input("-->"))
@@ -251,15 +277,22 @@ def take_control(tab):
                     print()
                 else:
                     print("invalid input".upper())
-                # print(sort_seq)
                 show_table([temp_data[i] for i in sort_seq], tab)
         elif at == 2:
             for i in enumerate(header):
                 print(f"{i[0] + 1}. by {i[1].replace('_', ' ')}"),
-            srt = int(input("-->"))
+            try:
+                srt = int(input("-->"))
+            except ValueError:
+                print("INVALID INPUT")
+                continue
             print("1. ascending".upper())
             print("2. Descending".upper())
-            srt_type = int(input("-->"))
+            try:
+                srt_type = int(input("-->"))
+            except ValueError:
+                print("INVALID INPUT")
+                continue
             sort_seq = sort_field_seq(srt - 1, tab)
             if srt_type == 2:
                 sort_seq.reverse()
@@ -267,7 +300,6 @@ def take_control(tab):
                 print()
             else:
                 print("invalid input".upper())
-            # print(sort_seq)
             show_table([view_table(tab)[i] for i in sort_seq], tab)
         elif at == 3:
             if not inv:
@@ -297,17 +329,25 @@ def take_control(tab):
                         print("not enough for the item".upper())
                     ctz += 1
                 input_data(tab, temp)
-                print(temp)
         elif at == 4:
             if not inv:
                 ctrl = 1
             else:
                 print("ENTER THE ITEM NO OF THE RECORD YOU WANT TO UPDATE")
-                mod_id = input("-->")
+                try:
+                    mod_id = int(input("-->"))
+                except ValueError:
+                    print("invalid input".upper())
+                    continue
+                except IndexError:
+                    print("WRONG ITEM NO")
+                    continue
                 control.execute(f"select * from inventory where item_no = {mod_id}")
                 id_rec = control.fetchall()
                 print("Present Record")
-
+                if id_rec == ():
+                    print("ITEM NOT FOUND")
+                    continue
                 for j in field_to_row(align_records_with_head(id_rec, "inventory")):
                     for k in j:
                         print(k, end="| ")
@@ -330,9 +370,16 @@ def take_control(tab):
                 ctrl = 1
             else:
                 print("ENTER THE ITEM NO OF THE RECORD YOU WANT TO DELETE")
-                mod_id = input("-->")
+                try:
+                    mod_id = int(input("-->"))
+                except ValueError:
+                    print("INVALID INPUT")
+                    continue
                 control.execute(f"select * from inventory where item_no = {mod_id}")
                 id_rec = control.fetchall()
+                if id_rec == ():
+                    print("RECORD NOT FOUND")
+                    continue
                 print("Record")
                 for j in field_to_row(align_records_with_head(id_rec, "inventory")):
                     for k in j:
@@ -353,8 +400,16 @@ def bill(typ=0):
     temp = {}
     temp_lt = []
     while True:
-        item_no = int(input('Item_no: '))
-        quantity = int(input('Quantity: '))
+        try:
+            item_no = int(input('Item_no: '))
+        except ValueError:
+            print("Invalid input try again")
+            continue
+        try:
+            quantity = int(input('Quantity: '))
+        except ValueError:
+            print("Invalid input try again")
+            continue
         temp_lt.append((item_no, quantity))
         temp[item_no] = quantity
         print("do you want to enter more items y/n?".upper())
@@ -390,52 +445,6 @@ def gen_bill():
     print(f"TOTAL AMOUNT = Rs {sum([int(i) for i in display_record[-1][1:]])}")
     input_data("sales", actual_rec)
 
-
-def update_inventory():
-    print("ENTER THE ITEM NO OF THE RECORD YOU WANT TO UPDATE")
-    mod_id = input("-->")
-    control.execute(f"select * from inventory where item_no = {mod_id}")
-    id_rec = control.fetchall()
-    print("Present Record")
-
-    for j in field_to_row(align_records_with_head(id_rec, "inventory")):
-        for k in j:
-            print(k, end="| ")
-        print()
-
-    print("SELECT WHAT YOU WANT TO CHANGE")
-
-    for i in enumerate(table_structure("inventory")[1:]):
-        print(f"{i[0] + 1}. {i[1][0]}")
-    prop_id = input("-->")
-    hed = [i[0] for i in table_structure("inventory")][int(prop_id)]
-    print(hed)
-    print("ENTER THE NEW VALUE")
-    new_dat = input("-->")
-
-    print(control.execute(f"update inventory set {hed}='{new_dat}' where item_no = {mod_id};"))
-    connection.commit()
-
-
-def delete_inventory():
-    print("ENTER THE ITEM NO OF THE RECORD YOU WANT TO DELETE")
-    mod_id = input("-->")
-    control.execute(f"select * from inventory where item_no = {mod_id}")
-    id_rec = control.fetchall()
-    print("Record")
-    for j in field_to_row(align_records_with_head(id_rec, "inventory")):
-        for k in j:
-            print(k, end="| ")
-        print()
-    print("ARE YOU SURE YOU WANT TO DELETE IT? Y/N")
-    des = input()
-    if des.upper() == 'Y':
-        control.execute(f"DELETE FROM INVENTORY WHERE ITEM_NO = '{mod_id}' ")
-    else:
-        return
-    connection.commit()
-
-
 vtrl = 0
 
 while not vtrl:
@@ -443,7 +452,11 @@ while not vtrl:
           "2. INVENTORY\n"
           "3. VIEW SALES HISTORY\n"
           "4. EXIT")
-    win = int(input("--->"))
+    try:
+        win = int(input("--->"))
+    except ValueError:
+        print("INVALID INPUT")
+        continue
     if win == 1:
         gen_bill()
     elif win == 2:

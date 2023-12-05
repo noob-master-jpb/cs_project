@@ -41,7 +41,10 @@ def filter(tab):
         up = "'" + up + "'"
         down = "'" + down + "'"
     # print(f"SELECT * FROM {tab} WHERE {ls[ap-1]} BETWEEN {up} AND {down};".upper())
-    print(control.execute(f"SELECT * FROM {tab} WHERE {ls[ap - 1]} BETWEEN {up} AND {down};".upper()), "RECORDS FOUND")
+    num_rec = control.execute(f"SELECT * FROM {tab} WHERE {ls[ap - 1]} BETWEEN {up} AND {down};".upper())
+    print(num_rec, "RECORDS FOUND")
+    if num_rec == 0:
+        return None
     filt_data = control.fetchall()
     show_table(filt_data, tab)
     return filt_data
@@ -73,6 +76,8 @@ def take_control(tab):
         at = int(input("--> "))
         if at == 1:
             temp_data = filter(tab)
+            if temp_data is None:
+                break
             # print(temp_data)
             print("DO YOU WANT TO SORT THIS TABLE? y/n")
             sr = input("-->")
